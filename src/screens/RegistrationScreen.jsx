@@ -47,11 +47,9 @@ export const RegistrationScreen = () => {
 const styles = StyleSheet.create({
   form: {
     position: "relative",
-    flex: 1,
     paddingTop: 92,
-    paddingLeft: 16,
-    paddingRight: 16,
-    maxHeight: 549,
+    paddingHorizontal: 16,
+    paddingBottom: 78,
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,

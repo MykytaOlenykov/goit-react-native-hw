@@ -8,10 +8,8 @@ export const FormButton = ({ text }) => (
 
 const styles = StyleSheet.create({
   button: {
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 32,
-    paddingRight: 32,
+    paddingVertical: 16,
+    paddingHorizontal: 32,
     backgroundColor: "#FF6C00",
     borderRadius: 100,
   },

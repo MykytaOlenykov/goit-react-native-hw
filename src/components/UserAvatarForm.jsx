@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import testUserAvatar from "../assets/images/testUserAvatar.jpg";
 import testBigNarutoAvatar from "../assets//images/614743.png";
 
@@ -8,12 +9,6 @@ export const UserAvatarForm = () => {
   const btnStyle = isShowTestUserAvatar
     ? [styles.button, styles.button_when_show_avatar]
     : [styles.button];
-  const btnLineXStyle = isShowTestUserAvatar
-    ? [styles.buttonLineX, styles.button_line_when_show_avatar]
-    : [styles.buttonLineX];
-  const btnLineYStyle = isShowTestUserAvatar
-    ? [styles.buttonLineY, styles.button_line_when_show_avatar]
-    : [styles.buttonLineY];
 
   const handleToggleShowAvatar = () => {
     setIsShowTestUserAvatar((prev) => !prev);
@@ -28,8 +23,11 @@ export const UserAvatarForm = () => {
       </View>
 
       <TouchableOpacity style={btnStyle} onPress={handleToggleShowAvatar}>
-        <View style={btnLineXStyle} />
-        <View style={btnLineYStyle} />
+        <AntDesign
+          name="plus"
+          size={15}
+          color={isShowTestUserAvatar ? "#BDBDBD" : "#FF6C00"}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -70,20 +68,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderColor: "#E8E8E8",
     transform: [{ rotate: "45deg" }],
-  },
-  buttonLineX: {
-    position: "absolute",
-    width: 13,
-    height: 1,
-    backgroundColor: "#FF6C00",
-  },
-  buttonLineY: {
-    position: "absolute",
-    width: 1,
-    height: 13,
-    backgroundColor: "#FF6C00",
-  },
-  button_line_when_show_avatar: {
-    backgroundColor: "#BDBDBD",
   },
 });

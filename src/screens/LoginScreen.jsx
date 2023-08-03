@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, KeyboardAvoidingView, Platform } from "react-native";
 import { AuthFormInput } from "../components/AuthFormInput";
 import { FormButton } from "../components/FormButton";
 import { PrimaryTitle } from "../components/PrimaryTitle";
@@ -13,23 +13,27 @@ export const LoginScreen = () => {
   return (
     <AuthFromContainer>
       <View style={styles.form}>
-        <PrimaryTitle text="Увійти" />
-        <AuthFormInput
-          onChangeInputValue={setPassword}
-          value={password}
-          placeholder="Адреса електронної пошти"
-          isAddMb
-        />
-        <AuthFormInput
-          onChangeInputValue={setEmail}
-          value={email}
-          placeholder="Пароль"
-          isPassword
-        />
-        <View style={styles.btnConatiner}>
-          <FormButton btnStyles={[styles.button]} text="Зареєстуватися" />
-        </View>
-        <AuthFromLink linkText="Зареєструватися" text="Немає акаунту?" />
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
+          <PrimaryTitle text="Увійти" />
+          <AuthFormInput
+            onChangeInputValue={setPassword}
+            value={password}
+            placeholder="Адреса електронної пошти"
+            isAddMb
+          />
+          <AuthFormInput
+            onChangeInputValue={setEmail}
+            value={email}
+            placeholder="Пароль"
+            isPassword
+          />
+          <View style={styles.btnConatiner}>
+            <FormButton btnStyles={[styles.button]} text="Зареєстуватися" />
+          </View>
+          <AuthFromLink linkText="Зареєструватися" text="Немає акаунту?" />
+        </KeyboardAvoidingView>
       </View>
     </AuthFromContainer>
   );
@@ -38,11 +42,9 @@ export const LoginScreen = () => {
 const styles = StyleSheet.create({
   form: {
     position: "relative",
-    flex: 1,
     paddingTop: 32,
-    paddingLeft: 16,
-    paddingRight: 16,
-    maxHeight: 489,
+    paddingHorizontal: 16,
+    paddingBottom: 144,
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
