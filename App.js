@@ -22,13 +22,11 @@ export default function App() {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.root}>
-        {/* <RegistrationScreen /> */}
-        <LoginScreen />
-        <StatusBar style="auto" />
-      </View>
-    </TouchableWithoutFeedback>
+    <View style={styles.root}>
+      {/* <RegistrationScreen /> */}
+      <LoginScreen />
+      <StatusBar style="auto" />
+    </View>
   );
 }
 
