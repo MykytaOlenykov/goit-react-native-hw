@@ -1,7 +1,7 @@
 import { TouchableOpacity, StyleSheet, Text } from "react-native";
 
-export const FormButton = ({ text }) => (
-  <TouchableOpacity style={styles.button}>
+export const FormButton = ({ text, onSubmit }) => (
+  <TouchableOpacity style={styles.button} onPress={onSubmit}>
     <Text style={styles.buttonText}>{text}</Text>
   </TouchableOpacity>
 );

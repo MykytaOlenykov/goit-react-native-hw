@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -12,37 +12,54 @@ import { AuthFormInput } from "../components/AuthFormInput";
 import { FormButton } from "../components/FormButton";
 import { PrimaryTitle } from "../components/PrimaryTitle";
 import { AuthFromLink } from "../components/AuthFromLink";
+import { logInSchema } from "../schemas";
 import imageBg from "../assets/images/authBg.jpg";
 
 export const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
+  const handleSubmit = async () => {
+    try {
+      const data = await logInSchema.validate({ email, password });
+
+      console.log(data);
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1 }}>
         <ImageBackground source={imageBg} style={styles.imageBg}>
           <KeyboardAvoidingView
-            style={styles.authContainer}
-            keyboardVerticalOffset={-240}
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            style={styles.container}
+            keyboardVerticalOffset={-241}
+            behavior={Platform.OS == "ios" ? "padding" : undefined}
           >
             <View style={styles.form}>
               <PrimaryTitle text="Увійти" />
               <AuthFormInput
-                onChangeInputValue={setPassword}
-                value={password}
+                onChangeInputValue={setEmail}
+                value={email}
                 placeholder="Адреса електронної пошти"
                 isAddMb
               />
               <AuthFormInput
-                onChangeInputValue={setEmail}
-                value={email}
+                onChangeInputValue={setPassword}
+                value={password}
                 placeholder="Пароль"
                 isPassword
               />
               <View style={styles.btnConatiner}>
-                <FormButton btnStyles={[styles.button]} text="Зареєстуватися" />
+                <FormButton
+                  btnStyles={[styles.button]}
+                  text="Зареєстуватися"
+                  onSubmit={handleSubmit}
+                />
               </View>
               <AuthFromLink linkText="Зареєструватися" text="Немає акаунту?" />
             </View>
@@ -56,9 +73,8 @@ export const LoginScreen = () => {
 const styles = StyleSheet.create({
   imageBg: {
     flex: 1,
-    resizeMode: "cover",
   },
-  authContainer: {
+  container: {
     flex: 1,
     justifyContent: "flex-end",
   },
