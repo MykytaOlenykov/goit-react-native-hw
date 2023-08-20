@@ -1,8 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import { Text, StyleSheet } from "react-native";
 
-export const AuthFromLink = ({ linkText, text }) => (
+export const AuthFromLink = ({ linkText, text, onNavigate }) => (
   <Text style={styles.text}>
-    {text} <Text style={styles.linkText}>{linkText}</Text>
+    {text}{" "}
+    <Text style={styles.linkText} onPress={onNavigate}>
+      {linkText}
+    </Text>
   </Text>
 );
 

@@ -5,39 +5,112 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
-  ImageBackground,
   Keyboard,
 } from "react-native";
+import * as yup from "yup";
 import { AuthFormInput } from "../components/AuthFormInput";
 import { FormButton } from "../components/FormButton";
 import { PrimaryTitle } from "../components/PrimaryTitle";
 import { UserAvatarForm } from "../components/UserAvatarForm";
 import { AuthFromLink } from "../components/AuthFromLink";
-import { registerSchema } from "../schemas/registerSchema";
-import imageBg from "../assets/images/authBg.jpg";
+import { ErrorMessage } from "../components/ErrorMessage";
+import { nameSchema, emailSchema, passwordSchema } from "../schemas";
+import { BgImage } from "../components/BgImage";
 
-export const RegistrationScreen = () => {
+export const RegistrationScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nameError, setNameError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
 
   const handleSubmit = async () => {
     try {
-      const data = await registerSchema.validate({ name, email, password });
+      const data = await yup
+        .object({
+          name: nameSchema,
+          email: emailSchema,
+          password: passwordSchema,
+        })
+        .validate({ name, email, password }, { abortEarly: false });
 
       console.log(data);
-      setName("");
-      setEmail("");
-      setPassword("");
+      resetForm();
+      navigation.navigate("Home");
     } catch (error) {
-      console.error(error.message);
+      const errorsMessages = error.inner.reduce(
+        (acc, validationError) => {
+          const fieldName = validationError.path;
+          const errorMessage = validationError.message;
+
+          if (fieldName === "email" && !acc.email) {
+            acc.email = errorMessage;
+          } else if (fieldName === "password" && !acc.password) {
+            acc.password = errorMessage;
+          } else if (fieldName === "name" && !acc.name) {
+            acc.name = errorMessage;
+          }
+
+          return acc;
+        },
+        { email: null, password: null, name: null }
+      );
+
+      setNameError(errorsMessages.name);
+      setEmailError(errorsMessages.email);
+      setPasswordError(errorsMessages.password);
     }
+  };
+
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setNameError(null);
+    setPasswordError(null);
+    setEmailError(null);
+  };
+
+  const handleChangeName = (text) => {
+    setName(text);
+    if (nameError) {
+      nameSchema
+        .validate(text)
+        .then(() => setNameError(null))
+        .catch((error) => setNameError(error.message));
+    }
+  };
+
+  const handleChangeEmail = (text) => {
+    setEmail(text);
+    if (emailError) {
+      emailSchema
+        .validate(text)
+        .then(() => setEmailError(null))
+        .catch((error) => setEmailError(error.message));
+    }
+  };
+
+  const handleChangePassword = (text) => {
+    setPassword(text);
+    if (passwordError) {
+      passwordSchema
+        .validate(text)
+        .then(() => setPasswordError(null))
+        .catch((error) => setPasswordError(error.message));
+    }
+  };
+
+  const handleNavigate = () => {
+    navigation.navigate("Login");
+    resetForm();
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1 }}>
-        <ImageBackground source={imageBg} style={styles.imageBg}>
+        <BgImage>
           <KeyboardAvoidingView
             style={styles.container}
             keyboardVerticalOffset={-175}
@@ -46,24 +119,33 @@ export const RegistrationScreen = () => {
             <View style={styles.form}>
               <UserAvatarForm />
               <PrimaryTitle text="Реєстрація" />
-              <AuthFormInput
-                onChangeInputValue={setName}
-                value={name}
-                placeholder="Логін"
-                isAddMb
-              />
-              <AuthFormInput
-                onChangeInputValue={setEmail}
-                value={email}
-                placeholder="Адреса електронної пошти"
-                isAddMb
-              />
-              <AuthFormInput
-                onChangeInputValue={setPassword}
-                value={password}
-                placeholder="Пароль"
-                isPassword
-              />
+              <View style={styles.inputContainer}>
+                <AuthFormInput
+                  onChangeInputValue={handleChangeName}
+                  value={name}
+                  placeholder="Логін"
+                />
+                {nameError && <ErrorMessage text={nameError} />}
+              </View>
+              <View style={styles.inputContainer}>
+                <AuthFormInput
+                  onChangeInputValue={handleChangeEmail}
+                  value={email}
+                  placeholder="Адреса електронної пошти"
+                  isAddMt
+                />
+                {emailError && <ErrorMessage text={emailError} />}
+              </View>
+              <View>
+                <AuthFormInput
+                  onChangeInputValue={handleChangePassword}
+                  value={password}
+                  placeholder="Пароль"
+                  isPassword
+                  isAddMt
+                />
+                {passwordError && <ErrorMessage text={passwordError} />}
+              </View>
               <View style={styles.btnConatiner}>
                 <FormButton
                   btnStyles={[styles.button]}
@@ -71,19 +153,20 @@ export const RegistrationScreen = () => {
                   onSubmit={handleSubmit}
                 />
               </View>
-              <AuthFromLink linkText="Увійти" text="Вже є акаунт?" />
+              <AuthFromLink
+                linkText="Увійти"
+                text="Вже є акаунт?"
+                onNavigate={handleNavigate}
+              />
             </View>
           </KeyboardAvoidingView>
-        </ImageBackground>
+        </BgImage>
       </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  imageBg: {
-    flex: 1,
-  },
   container: {
     flex: 1,
     justifyContent: "flex-end",
@@ -96,6 +179,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+  },
+  inputContainer: {
+    marginBottom: 16,
   },
   btnConatiner: {
     marginTop: 43,

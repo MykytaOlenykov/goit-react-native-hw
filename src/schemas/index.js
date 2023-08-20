@@ -1,2 +1,3 @@
-export * from "./registerSchema";
-export * from "./logInSchema";
+export * from "./nameSchema";
+export * from "./emailSchema";
+export * from "./passwordSchema";

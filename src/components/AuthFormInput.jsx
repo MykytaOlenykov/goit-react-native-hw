@@ -11,12 +11,9 @@ export const AuthFormInput = ({
   value,
   placeholder,
   onChangeInputValue,
-  isAddMb = false,
   isPassword = false,
 }) => {
-  const [style, setStyle] = useState(() =>
-    isAddMb ? [styles.input, styles.input_mb] : [styles.input]
-  );
+  const [style, setStyle] = useState(() => [styles.input]);
   const [hidePassword, setHidePassword] = useState(true);
 
   const handleAddFocusStyle = () => {
@@ -24,8 +21,7 @@ export const AuthFormInput = ({
   };
 
   const handleRemoveFocusStyle = () => {
-    const style = isAddMb ? [styles.input, styles.input_mb] : [styles.input];
-    setStyle(style);
+    setStyle([styles.input]);
   };
 
   const handleTogglePassword = () => {
@@ -71,9 +67,6 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto_Regular",
     fontSize: 16,
     lineHeight: 19,
-  },
-  input_mb: {
-    marginBottom: 16,
   },
   input_focus: {
     color: "#212121",
