@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
-import { Fontisto } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 export const CreatePostsInput = ({
   value,
@@ -34,9 +34,9 @@ export const CreatePostsInput = ({
   return (
     <View style={styles.container}>
       {isShowIcon && (
-        <Fontisto
+        <Feather
           style={styles.icon}
-          name="map-marker-alt"
+          name="map-pin"
           size={24}
           color={iconColor}
         />

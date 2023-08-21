@@ -42,7 +42,9 @@ export const AuthFormInput = ({
       />
       {isPassword && (
         <TouchableOpacity style={styles.button} onPress={handleTogglePassword}>
-          <Text style={styles.text}>Показати</Text>
+          <Text style={styles.text}>
+            {hidePassword ? "Показати" : "Приховати"}
+          </Text>
         </TouchableOpacity>
       )}
     </View>

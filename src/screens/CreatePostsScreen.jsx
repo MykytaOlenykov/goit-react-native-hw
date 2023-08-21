@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -34,74 +35,82 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <View style={styles.form}>
-          <View style={styles.imageThumb}>
-            {isShowTestImg && (
-              <Image style={styles.image} source={testPostImg} />
-            )}
-            <TouchableOpacity
-              style={
-                isShowTestImg
-                  ? [styles.button, styles.buttonWhenShowImg]
-                  : [styles.button]
-              }
-              onPress={handleToggleShowImg}
-            >
-              <MaterialIcons
-                name="camera-alt"
-                size={24}
-                color={isShowTestImg ? "#FFF" : "#BDBDBD"}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <Text style={styles.text}>
-            {isShowTestImg ? "Редагувати фото" : "Завантажте фото"}
-          </Text>
-
-          <View style={styles.inputContainer}>
-            <CreatePostsInput
-              placeholder="Назва..."
-              value={name}
-              onChangeValue={setName}
-              isPrimaryInputText
-            />
-          </View>
-
-          <View>
-            <CreatePostsInput
-              placeholder="Місцевість..."
-              value={place}
-              onChangeValue={setPlace}
-              isShowIcon
-            />
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <FormButton isDisabled={isDisabledButton} text="Опубліковати" />
-          </View>
-        </View>
-
-        <TouchableOpacity
-          onPress={handleLeaveScreen}
-          style={styles.clearButton}
+      <View style={styles.primaryContainer}>
+        <KeyboardAvoidingView
+          style={styles.secondaryContainer}
+          behavior={Platform.OS == "ios" ? "padding" : undefined}
         >
-          <Feather name="trash-2" size={24} color="#BDBDBD" />
-        </TouchableOpacity>
+          <View style={styles.form}>
+            <View style={styles.imageThumb}>
+              {isShowTestImg && (
+                <Image style={styles.image} source={testPostImg} />
+              )}
+              <TouchableOpacity
+                style={
+                  isShowTestImg
+                    ? [styles.button, styles.buttonWhenShowImg]
+                    : [styles.button]
+                }
+                onPress={handleToggleShowImg}
+              >
+                <MaterialIcons
+                  name="camera-alt"
+                  size={24}
+                  color={isShowTestImg ? "#FFF" : "#BDBDBD"}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.text}>
+              {isShowTestImg ? "Редагувати фото" : "Завантажте фото"}
+            </Text>
+
+            <View style={styles.inputContainer}>
+              <CreatePostsInput
+                placeholder="Назва..."
+                value={name}
+                onChangeValue={setName}
+                isPrimaryInputText
+              />
+            </View>
+
+            <View>
+              <CreatePostsInput
+                placeholder="Місцевість..."
+                value={place}
+                onChangeValue={setPlace}
+                isShowIcon
+              />
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <FormButton isDisabled={isDisabledButton} text="Опубліковати" />
+            </View>
+          </View>
+
+          <TouchableOpacity
+            onPress={handleLeaveScreen}
+            style={styles.clearButton}
+          >
+            <Feather name="trash-2" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  primaryContainer: {
     flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
     paddingVertical: 32,
     paddingHorizontal: 16,
     backgroundColor: "#fff",
+  },
+  secondaryContainer: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   form: {
     width: "100%",

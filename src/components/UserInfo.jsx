@@ -1,15 +1,14 @@
 import { Text, View, StyleSheet, Image } from "react-native";
-import avatarImg from "../assets/images/testUserAvatar.jpg";
 
-export const UserInfo = () => {
+export const UserInfo = ({ name, email, avatar }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageThumb}>
-        <Image style={styles.image} source={avatarImg} />
+        <Image style={styles.image} source={avatar} />
       </View>
       <View style={styles.text}>
-        <Text style={styles.login}>Natali Romanova</Text>
-        <Text style={styles.email}>email@example.com</Text>
+        <Text style={styles.login}>{name}</Text>
+        <Text style={styles.email}>{email}</Text>
       </View>
     </View>
   );

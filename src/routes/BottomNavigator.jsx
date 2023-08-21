@@ -8,6 +8,30 @@ import { Feather } from "@expo/vector-icons";
 
 const Tabs = createBottomTabNavigator();
 
+export const CreatePostsTabScreen = () => (
+  <Tabs.Screen
+    name="CreatePosts"
+    component={CreatePostsScreen}
+    options={({ navigation }) => ({
+      title: "Створити публікацію",
+      tabBarStyle: { display: "none" },
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <AntDesign name="arrowleft" size={24} color="rgba(33, 33, 33, 0.8)" />
+        </TouchableOpacity>
+      ),
+      tabBarIcon: () => (
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={() => navigation.navigate("CreatePosts")}
+        >
+          <AntDesign name="plus" size={16} color="#FFFFFF" />
+        </TouchableOpacity>
+      ),
+    })}
+  />
+);
+
 export const BottomNavigator = () => (
   <Tabs.Navigator
     initialRouteName="Posts"
